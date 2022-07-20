@@ -14,12 +14,19 @@ loadAllEvents();
 
 //load all events
 function loadAllEvents(){
-    form.addEventListener('submit', calculateLoan);
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        document.querySelector('.loading').style.display = 'block';
+
+        //invokes caculateLoan after 2 seconds
+        setTimeout(calculateLoan, 2000);
+    });
 }
 
 //calculate loan
 function calculateLoan(e){
-    e.preventDefault();
+    // e.preventDefault();
     let intAmount = parseFloat(amount.value);
     let intInterest = parseFloat(interest.value);
     let intMonth = parseFloat(year.value) * 12;
@@ -33,6 +40,8 @@ function calculateLoan(e){
         monthlyPayment.value = calMonthlyPayment.toFixed(2);
         totalPayment.value = calTotalPayment.toFixed(2);
         interestPayment.value = calInterest.toFixed(2);
+        document.querySelector('.loading').style.display = 'none';
+        document.querySelector('.results').style.display = 'block';
     }else{
         showError('Please check the numbers');
     }
@@ -40,6 +49,8 @@ function calculateLoan(e){
 
 //show error: for uncertain numbers
 function showError(error){
+    document.querySelector('.loading').style.display = 'none';
+    document.querySelector('.results').style.display = 'none';
     let alertError = document.createElement('div');
     alertError.className = 'alert alert-danger';
     alertError.textContent = error;
